@@ -1,0 +1,13 @@
+# Secrets
+.env
+env/
+
+# Large Data Files
+*.csv
+train_FD001.txt
+
+# Python environment
+__pycache__/
+venv/
+venv/
+.venv/
