@@ -14,6 +14,19 @@ An Industrial IoT (IIoT) edge-computing pipeline designed to monitor a fleet of 
 * **Dynamic Leaderboard:** Real-time sorting of the fleet based on current thermal stress.
 * **Predictive Countdown:** Live "Cycles to Failure" estimate based on the slope of temperature degradation.
 
+## System Evolution: Reactive vs. Predictive
+Below is the architectural comparison between the initial build (edge_monitor.py) and the current production version (monitor.py).
+
+| Feature | Phase 1: Reactive Monitor (`edge_monitor.py`) | Phase 2: Predictive Gateway (`monitor.py`) |
+| :--- | :--- | :--- |
+| **Logic Type** | **Threshold-Based**: Triggers only when the limit is breached. | **Trend-Based**: Forecasts failure before the limit is reached. |
+| **Signal Integrity** | **Raw Data**: Sensitive to sensor noise and transient spikes. | **Digital Signal Processing**: Implements a 10-cycle Rolling Mean filter. |
+| **Math Engine** | Simple Boolean Comparison ($Current > Limit$). | **Linear Regression**: Uses `numpy.polyfit` for slope-intercept analysis. |
+| **Key Metric** | Current Temperature (°R). | **RUL (Remaining Useful Life)**: Estimated cycles until failure. |
+| **Safety Protocol** | Binary (Nominal / Shutdown). | **Tiered Alerts**: Nominal $\rightarrow$ Warning $\rightarrow$ Shutdown. |
+| **Fault Injection** | Passive observation of historical data. | **Active Simulation**: Real-time "heat soak" injection on target units. |
+---
+
 ## Installation & Setup
 1. **Prerequisites**
     * Python 3.9+
